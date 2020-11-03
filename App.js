@@ -6,11 +6,13 @@ export default class App extends Component{
     super(props);
     this.state ={
       isLoading:true,
-      DataSource:null,
+      DataSource:[],
     }
   }
 
+
   componentDidMount(){
+    //Fetching data on componentDidMount
     return fetch('https://api.github.com/search/repositories?q=qwe&per_page=100&page=1').then((response)=> response.json()).then((responseJson)=>
     {
       this.setState({
@@ -21,9 +23,11 @@ export default class App extends Component{
     .catch((error)=> {
       console.log(error)
     });
+    
   }
 
   render(){
+    //showing the ActivityIndicator till data loads
     if(this.state.isLoading){
       return(
         <View>
@@ -34,7 +38,7 @@ export default class App extends Component{
       let Data = this.state.DataSource.items.owner.map((val,key)=>{
         return(
           <View key={key}>
-            <Image style={styles.tinyLogo} source={require({val.avatar_url})}  />
+            <Image style={styles.tinyLogo} source={val.avatar_url}  />
             <Text>{val.repos_url}</Text>
             <Text>{val.url}</Text>
           </View>
@@ -64,8 +68,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   safeAreaContainer: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    flex: 1
   },
 });
 
